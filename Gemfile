@@ -68,6 +68,8 @@ group :test do
   gem "selenium-webdriver"
 end
 
+gem 'devise'
+
 group :production do
   gem 'pg', '~> 1.5.9'
 end
