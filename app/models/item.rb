@@ -7,9 +7,9 @@ class Item < ApplicationRecord
 
   belongs_to :category
   belongs_to :condition
-  belongs_to :delivery_fee
+  belongs_to :shipping_fee_status
   belongs_to :prefecture
-  belongs_to :shipping_day
+  belongs_to :scheduled_delivery
 
   with_options presence: true do
     validates :image
@@ -17,18 +17,18 @@ class Item < ApplicationRecord
     validates :description
     validates :category_id
     validates :condition_id
-    validates :delivery_fee_id
+    validates :shipping_fee_status_id
     validates :prefecture_id
-    validates :shipping_day_id
+    validates :scheduled_delivery_id
     validates :price
   end
 
   with_options numericality: { other_than: 1, message: 'を選択してください' } do
     validates :category_id
     validates :condition_id
-    validates :delivery_fee_id
+    validates :shipping_fee_status_id
     validates :prefecture_id
-    validates :shipping_day_id
+    validates :scheduled_delivery_id
   end
 
   validates :price, numericality: {
