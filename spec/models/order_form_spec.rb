@@ -4,10 +4,7 @@ RSpec.describe OrderForm, type: :model do
   before do
     @user = FactoryBot.create(:user)
     @item = FactoryBot.create(:item)
-    @order_form = OrderForm.new(user_id: @user.id, item_id: @item.id,
-                                postal_code: '123-4567', prefecture_id: 2, city: '札幌市',
-                                address: '南1条', building: 'さっぽろビル', phone_number: '09012345678',
-                                token: 'tok_abcdefghijk00000000000000000')
+    @order_form = FactoryBot.build(:order_form, user_id: @user.id, item_id: @item.id)
   end
 
   describe '商品購入' do
@@ -48,6 +45,18 @@ RSpec.describe OrderForm, type: :model do
         expect(@order_form.errors.full_messages).to include("Prefecture can't be blank")
       end
 
+      it '市区町村が空では購入できない' do
+        @order_form.city = ''
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include("City can't be blank")
+      end
+
+      it '番地が空では購入できない' do
+        @order_form.address = ''
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include("Address can't be blank")
+      end
+
       it '電話番号が空だと購入できない' do
         @order_form.phone_number = ''
         @order_form.valid?
@@ -56,6 +65,18 @@ RSpec.describe OrderForm, type: :model do
 
       it '電話番号が12桁以上だと購入できない' do
         @order_form.phone_number = '090123456789'
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include('Phone number is invalid')
+      end
+
+      it '電話番号が9桁以下では購入できない' do
+        @order_form.phone_number = '090123456'
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include('Phone number is invalid')
+      end
+
+      it '電話番号が半角数値以外では購入できない（例：全角数字）' do
+        @order_form.phone_number = '０９０１２３４５６７８'
         @order_form.valid?
         expect(@order_form.errors.full_messages).to include('Phone number is invalid')
       end
