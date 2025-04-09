@@ -52,34 +52,18 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_05_222033) do
     t.index ["order_id"], name: "index_addresses_on_order_id"
   end
 
-  create_table "categories", charset: "utf8mb3", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "conditions", charset: "utf8mb3", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "delivery_fees", charset: "utf8mb3", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "items", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
     t.integer "price", null: false
     t.integer "category_id", null: false
+    t.integer "condition_id", null: false
     t.integer "shipping_fee_status_id", null: false
     t.integer "prefecture_id", null: false
     t.integer "scheduled_delivery_id", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status_id"
-    t.integer "condition_id", null: false
     t.index ["user_id"], name: "index_items_on_user_id"
   end
 
@@ -90,16 +74,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_05_222033) do
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_orders_on_item_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
-  end
-
-  create_table "prefectures", charset: "utf8mb3", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "shipping_days", charset: "utf8mb3", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "users", charset: "utf8mb3", force: :cascade do |t|

@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :redirect_if_sold, only: [:edit, :update]
   def index
     @items = Item.all.order(created_at: :desc)
   end
@@ -53,5 +54,9 @@ class ItemsController < ApplicationController
       :image, :name, :description, :category_id, :condition_id,
       :shipping_fee_status_id, :prefecture_id, :scheduled_delivery_id, :price
     ).merge(user_id: current_user.id)
+  end
+
+  def redirect_if_sold
+    redirect_to root_path if @item.order.present?
   end
 end
