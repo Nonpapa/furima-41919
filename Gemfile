@@ -50,6 +50,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'pry-rails'
 end
 
 group :development do
@@ -77,3 +78,6 @@ gem 'active_hash'
 group :production do
   gem 'pg', '~> 1.5.9'
 end
+
+gem 'payjp'
+gem 'gon'

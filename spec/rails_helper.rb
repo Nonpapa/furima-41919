@@ -36,6 +36,9 @@ I18n.locale = 'en'
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
+  config.before(:suite) do
+    ActiveRecord.async_query_executor = :global_thread_pool
+  end
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
   ]

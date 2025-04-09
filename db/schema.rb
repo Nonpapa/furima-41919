@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_02_011541) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_05_222033) do
   create_table "active_storage_attachments", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,19 +39,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_02_011541) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "categories", charset: "utf8mb3", force: :cascade do |t|
+  create_table "addresses", charset: "utf8mb3", force: :cascade do |t|
+    t.string "postal_code"
+    t.integer "prefecture_id"
+    t.string "city"
+    t.string "house_number"
+    t.string "building_name"
+    t.string "phone_number"
+    t.bigint "order_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "conditions", charset: "utf8mb3", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "delivery_fees", charset: "utf8mb3", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_addresses_on_order_id"
   end
 
   create_table "items", charset: "utf8mb3", force: :cascade do |t|
@@ -59,25 +57,23 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_02_011541) do
     t.text "description", null: false
     t.integer "price", null: false
     t.integer "category_id", null: false
+    t.integer "condition_id", null: false
     t.integer "shipping_fee_status_id", null: false
     t.integer "prefecture_id", null: false
     t.integer "scheduled_delivery_id", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status_id"
-    t.integer "condition_id", null: false
     t.index ["user_id"], name: "index_items_on_user_id"
   end
 
-  create_table "prefectures", charset: "utf8mb3", force: :cascade do |t|
+  create_table "orders", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "shipping_days", charset: "utf8mb3", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_orders_on_item_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "users", charset: "utf8mb3", force: :cascade do |t|
@@ -100,5 +96,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_02_011541) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "addresses", "orders"
   add_foreign_key "items", "users"
+  add_foreign_key "orders", "items"
+  add_foreign_key "orders", "users"
 end
