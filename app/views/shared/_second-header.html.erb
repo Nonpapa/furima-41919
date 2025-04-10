@@ -1,5 +1,6 @@
 <header class='second-header'>
   <%= link_to image_tag("furima-logo-color.png", class:"second-logo"), "/" %>
+  <% unless devise_controller?|| (controller_name == 'orders' && action_name == 'index')%> 
   <div class="header-links">
     <% if user_signed_in? %>
       <span class="user-name"><%= current_user.nickname %> さん</span>
@@ -9,4 +10,5 @@
       <%= link_to "新規登録", new_user_registration_path, class: "signup-link", data: { turbo: false } %>
     <% end %>
   </div>
+  <% end %>
 </header>
